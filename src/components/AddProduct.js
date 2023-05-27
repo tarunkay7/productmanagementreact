@@ -5,24 +5,29 @@ import TextField from '@mui/material/TextField';
 import Container from '@mui/material/Container';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 export default function AddProduct() {
-    const [productName, setProductName] = React.useState('');
-    const [productType, setProductType] = React.useState('');
-    const [productPlace, setProductPlace] = React.useState('');
-    const [productWarranty, setProductWarranty] = React.useState('');
+    const [name, setProductName] = React.useState('');
+    const [type, setProductType] = React.useState('');
+    const [place, setProductPlace] = React.useState('');
+    const [warranty, setProductWarranty] = React.useState('');
 
     const handleClick = (e) => {
         e.preventDefault();
-        const product = { productName, productType, productPlace, productWarranty };
+        const product = { name, type, place, warranty };
         console.log(product);
-        fetch('http://localhost:8080/api/products', {
+        fetch('http://localhost:8080/products', {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(product)
         })
             .then(() => {
-                console.log('new product added');
+                toast.success('Product added successfully', {
+                    position: toast.POSITION.BOTTOM_RIGHT
+                });
                 resetForm();
             })
             .catch((error) => {
@@ -36,8 +41,23 @@ export default function AddProduct() {
         setProductPlace('');
         setProductWarranty('');
     }
+    const Background = () => {
+        return (
+            <div className="background">
+                {[...Array(20)].map((_, index) => (
+                    <span key={index}></span>
+                ))}
+            </div>
+        );
+    };
+    const theme = createTheme({
+        palette: {
+            mode: 'dark',
+        },
+    });
 
     return (
+        <ThemeProvider theme={theme}>
         <Container maxWidth="sm">
             <Box
                 sx={{
@@ -47,12 +67,11 @@ export default function AddProduct() {
                     minHeight: '100vh',
                 }}
             >
-                <Paper elevation={24} sx={{ p: 2 }}>
-                    <h1>Add Product</h1>
 
+                <Paper elevation={24} sx={{ p: 2 ,borderRadius:'30px'}} className={"title"}>
+                    <h1 style={{ textAlign: 'center' }}>Add Product</h1>
 
                     <Grid container spacing={3}>
-
                         <Grid item xs={12}>
                             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                                 <TextField
@@ -60,52 +79,51 @@ export default function AddProduct() {
                                     id="productName"
                                     label="Product Name"
                                     variant="outlined"
-                                    value={productName}
+                                    value={name}
                                     onChange={(e) => setProductName(e.target.value)}
                                 />
                             </Box>
                         </Grid>
 
+                        <Grid item xs={12}>
+                            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                                <TextField
+                                    size="small"
+                                    id="productType"
+                                    label="Product Type"
+                                    variant="outlined"
+                                    value={type}
+                                    onChange={(e) => setProductType(e.target.value)}
+                                />
+                            </Box>
+                        </Grid>
 
+                        <Grid item xs={12}>
+                            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                                <TextField
+                                    size="small"
+                                    id="productPlace"
+                                    label="Product Place"
+                                    variant="outlined"
+                                    value={place}
+                                    onChange={(e) => setProductPlace(e.target.value)}
+                                />
+                            </Box>
+                        </Grid>
 
-                    <Grid item xs={12}>
-                        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                            <TextField
-                                size="small"
-                                id="productType"
-                                label="Product Type"
-                                variant="outlined"
-                                value = {productType}
-                                onChange={(e) => setProductType(e.target.value)}
-                            />
-                        </Box>
-                    </Grid>
+                        <Grid item xs={12}>
+                            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                                <TextField
+                                    size="small"
+                                    id="productWarranty"
+                                    label="Product Warranty"
+                                    variant="outlined"
+                                    value={warranty}
+                                    onChange={(e) => setProductWarranty(e.target.value)}
+                                />
+                            </Box>
+                        </Grid>
 
-                    <Grid item xs={12}>
-                        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                            <TextField
-                                size="small"
-                                id="productPlace"
-                                label="Product Place"
-                                variant="outlined"
-                                value={productPlace}
-                                onChange={(e) => setProductPlace(e.target.value)}
-                            />
-                        </Box>
-                    </Grid>
-
-                    <Grid item xs={12}>
-                        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                            <TextField
-                                size="small"
-                                id="productWarranty"
-                                label="Product Warranty"
-                                variant="outlined"
-                                value={productWarranty}
-                                onChange={(e) => setProductWarranty(e.target.value)}
-                            />
-                        </Box>
-                    </Grid>
                         <Grid item xs={12}>
                             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                                 <Button variant="contained" color="primary" onClick={handleClick}>
@@ -113,14 +131,12 @@ export default function AddProduct() {
                                 </Button>
                             </Box>
                         </Grid>
-
-
                     </Grid>
-
-
-
                 </Paper>
+                <ToastContainer />
             </Box>
+            <Background/>
         </Container>
+        </ThemeProvider>
     );
 }

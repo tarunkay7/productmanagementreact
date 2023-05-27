@@ -12,12 +12,12 @@ import Button from '@mui/material/Button';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-export default function FindByName() {
-    const [name, setName] = useState('');
+export default function FindByWarranty() {
+    const [warranty, setWarranty] = useState('');
     const [products, setProducts] = useState([]);
 
     const handleSearch = () => {
-        fetch(`http://localhost:8080/productsbyname/${name}`)
+        fetch(`http://localhost:8080/productsbywarranty/${warranty}`)
             .then((response) => response.json())
             .then((data) => {
                 setProducts(data);
@@ -44,30 +44,30 @@ export default function FindByName() {
 
     return (
         <ThemeProvider theme={theme}>
-        <Container maxWidth="sm">
-            <Box
-                sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    minHeight: '100vh',
-                }}
-            >
-                <Background />
-                <Paper elevation={24} sx={{ p: 2 ,borderRadius:'30px'}} className={"title"}>
-                    <h1 style={{ textAlign: 'center' }}>Get Product by Name</h1>
+            <Container maxWidth="sm">
+                <Box
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        minHeight: '100vh',
+                    }}
+                >
+                    <Background />
+                    <Paper elevation={24} sx={{ p: 2 ,borderRadius:'30px'}} className={"title"}>
+                        <h1 style={{ textAlign: 'center' }}>Get Product by Warranty</h1>
 
-                    <div style={{ display: 'flex', marginBottom: '1rem', justifyContent: 'center', alignItems: 'center' }}>
-                        <input
-                            type="text"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            style={{ marginRight: '1rem' }}
-                        />
-                        <Button variant="contained" onClick={handleSearch}>
-                            Search
-                        </Button>
-                    </div>
+                        <div style={{ display: 'flex', marginBottom: '1rem', justifyContent: 'center', alignItems: 'center' }}>
+                            <input
+                                type="text"
+                                value={warranty}
+                                onChange={(e) => setWarranty(e.target.value)}
+                                style={{ marginRight: '1rem' }}
+                            />
+                            <Button variant="contained" onClick={handleSearch}>
+                                Search
+                            </Button>
+                        </div>
 
                         <TableContainer component={Paper}>
                             <Table>
@@ -91,10 +91,10 @@ export default function FindByName() {
                                 </TableBody>
                             </Table>
                         </TableContainer>
-                </Paper>
-                <Background />
-            </Box>
-        </Container>
+                    </Paper>
+                    <Background />
+                </Box>
+            </Container>
         </ThemeProvider>
     );
 }
